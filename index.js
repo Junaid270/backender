@@ -46,7 +46,9 @@ app.use(
       "https://nagrikseva-admin.netlify.app",
       "http://localhost:3001", // React web app
       "http://localhost:3000",
+      "http://192.168.29.123:3001",
       "https://backender-1.onrender.com:3001",
+      "http://192.168.29.123:3000",
       "https://backender-1.onrender.com:3000",
       // Add your React Native development URLs
       "exp://192.168.29.123:19000", // Expo development
