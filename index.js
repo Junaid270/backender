@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo"); // You'll need to install this package
@@ -12,12 +14,12 @@ const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const userRoutes = require("./routes/userRoutes");
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const app = express();
 
 // MongoDB connection setup
-const mongoURI = "mongodb+srv://junaidshk2711:madmax1234@cluster0.ykcxw.mongodb.net/nagrik_seva?retryWrites=true&w=majority";
+const mongoURI = process.env.MONGODB_URI || "mongodb+srv://junaidshk2711:madmax1234@cluster0.ykcxw.mongodb.net/nagrik_seva";
 
 mongoose
   .connect(mongoURI, {
@@ -41,6 +43,7 @@ app.set("views", path.join(__dirname, "/views"));
 app.use(
   cors({
     origin: [
+      "https://nagrikseva-admin.netlify.app",
       "http://localhost:3001", // React web app
       "http://localhost:3000",
       "http://192.168.29.123:3001",
@@ -82,7 +85,8 @@ app.use(
       secure: process.env.NODE_ENV === "production", // Set to true in production with HTTPS
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days to match your current settings
-      sameSite: "lax", // Helps with CSRF protection
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Helps with CSRF protection
+      domain: process.env.NODE_ENV === "production" ? ".netlify.app" : undefined // Set domain for production
     },
     name: "sessionId", // Explicit session cookie name
   })
